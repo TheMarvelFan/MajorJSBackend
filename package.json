@@ -1,0 +1,17 @@
+{
+  "name": "majorjsproject",
+  "version": "1.0.0",
+  "description": "Major js Project",
+  "keywords": [
+    "javascript",
+    "backend",
+    "practice"
+  ],
+  "license": "ISC",
+  "author": "Kushagra Nigam",
+  "type": "module",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  }
+}
