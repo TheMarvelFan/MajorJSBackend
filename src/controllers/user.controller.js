@@ -21,7 +21,7 @@ const registerUser = asyncHandler( async (req, res) => {
   }
 
   // check if user already exists using both username and email
-  const duplicateUser = User.findOne({
+  const duplicateUser = await User.findOne({
     $or: [
       {
         username
@@ -38,7 +38,12 @@ const registerUser = asyncHandler( async (req, res) => {
 
   // check for images and avatar
   const avatarLocalPath = req.files?.avatar[0]?.path;
-  const coverImageLocalPath = req.files?.coverImage[0]?.path;
+  // const coverImageLocalPath = req.files?.coverImage[0]?.path;
+  let coverImageLocalPath;
+
+  if (req.files && Array.isArray(req.files.coverImage) && req.files.coverImage.length > 0) {
+    coverImageLocalPath = req.files.coverImage[0].path;
+  }
 
   if (!avatarLocalPath) {
     throw new ApiError(400, "Please provide an avatar image!");
