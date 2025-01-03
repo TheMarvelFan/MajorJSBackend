@@ -143,7 +143,7 @@ const loginUser = asyncHandler(async (req, res) => {
 
   // compare password
   const isValid = await foundUser.isPasswordCorrect(password);
-  if (isValid) {
+  if (!isValid) {
     throw new ApiError(401, "Password incorrect!");
   }
 
@@ -236,8 +236,8 @@ const refreshAccessToken = asyncHandler( async (req, res) => {
 
     return res
       .status(200)
-      .cookies("accessToken", accessToken, options)
-      .cookies("refreshToken", refreshToken, options)
+      .cookie("accessToken", accessToken, options)
+      .cookie("refreshToken", refreshToken, options)
       .json(
         new ApiResponse(
           200,
@@ -333,7 +333,7 @@ const updateUserAvatar = asyncHandler( async (req, res) => {
     throw new ApiError(500, "Failed to upload avatar image!");
   }
 
-  await User.findByIdAndUpdate(req.user?._id,
+  const user = await User.findByIdAndUpdate(req.user?._id,
     {
       $set: {
         avatar: avatar.url
@@ -349,7 +349,7 @@ const updateUserAvatar = asyncHandler( async (req, res) => {
     .json(
       new ApiResponse(
         200,
-        req.user,
+        user,
         "Avatar updated successfully"
       )
     );
@@ -368,7 +368,7 @@ const updateUserCoverImage = asyncHandler( async (req, res) => {
     throw new ApiError(500, "Failed to upload cover image!");
   }
 
-  await User.findByIdAndUpdate(req.user?._id,
+  const user = await User.findByIdAndUpdate(req.user?._id,
     {
       $set: {
         coverImage: coverImage.url
@@ -384,7 +384,7 @@ const updateUserCoverImage = asyncHandler( async (req, res) => {
     .json(
       new ApiResponse(
         200,
-        req.user,
+        user,
         "Cover Image updated successfully"
       )
     );
